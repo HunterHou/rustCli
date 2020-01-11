@@ -42,10 +42,10 @@ fn main() -> Result<(), CustomErr> {
     cmd = cmd + temp_dir;
     println!("cmd:{}", &cmd);
     let status = Command::new("cmd")
-        .current_dir("D:\\")
-        // .arg("start ")
-        // .arg(temp_dir)
-        .arg("ls")
+//        .current_dir("D:\\")
+        .arg("start ")
+        .arg(temp_dir)
+//        .arg("ls")
         .status()
         .expect("some thing wrong");
     println!("excute result:{:?}", status);
