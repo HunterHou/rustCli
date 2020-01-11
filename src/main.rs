@@ -1,4 +1,8 @@
+use std::path::Path;
 use std::process::Command;
+
+mod mfile;
+mod string_utils;
 
 struct Cli {
     pattern: String,
@@ -37,17 +41,21 @@ fn main() -> Result<(), CustomErr> {
         .map_err(|err| CustomErr(format!("read file {} file err:{}", temp_dir, err)))?;
     println!("context:{:?}", context);
     println!("Game Over!");
-
-    let mut cmd = String::from(" start ");
-    cmd = cmd + temp_dir;
-    println!("cmd:{}", &cmd);
-    let status = Command::new("cmd")
-//        .current_dir("D:\\")
-        .arg("start ")
-        .arg(temp_dir)
-//        .arg("ls")
+    // let status = Command::new("notepad.exe")
+    let status = Command::new("OpenWith")
+        // .current_dir("D:\\")
+        // .arg("test.txt")
+        .arg(&temp_dir)
         .status()
         .expect("some thing wrong");
     println!("excute result:{:?}", status);
+    let mut file = mfile::MFile::new();
+    let path = Path::new("d:\\test.txt");
+    file.name = string_utils::getString(path.file_name());
+    file.ext = string_utils::getString(path.extension());
+    let metedata = path.metadata().expect("get info fail");
+    file.size = metedata.len();
+    println!("info:{:?}", metedata);
+    println!("file:{:?}", file);
     return Ok(());
 }
